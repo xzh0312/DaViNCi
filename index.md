@@ -23,6 +23,8 @@ Note: Both Zihao Xie and Pingrui Lai contributed equally to this research.
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/intro.png?raw=true)
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/datasets_table.png?raw=true)
+
 ## Construction Method of DaViNCi
 
 **Simulator** : CARLA has been developed from the ground up to support development, training, and validation of autonomous driving systems. In addition to open-source code and protocols, CARLA provides open digital assets (urban layouts, buildings, vehicles) that were created for this purpose and can be used freely. The simulation platform supports flexible specification of sensor suites, environmental conditions, full control of all static and dynamic actors, maps generation and much more. [Link to Carla](https://carla.org/)
@@ -131,7 +133,12 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
   </video>
 </div>
 
+## Experiments
+### Discrete Environment
+**Discretization Adaptation**. 
+The partial extracts of four discretized maps are as follows. The partial extracts of the four discretized maps are shown below. Town01, Town02, and Town10 adopt a fine granularity of 5m, while Town03 adopts a coarse granularity of 12m. Red nodes represent nodes with only one exit, while yellow nodes represent nodes with multiple exits.
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/Dis.png?raw=true)
 
 
 
