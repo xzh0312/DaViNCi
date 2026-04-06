@@ -1,7 +1,7 @@
 ---
 layout: default
 ---
-
+# DaViNCi
 # Overviews
 - We propose the DaViNCi (**D**yn**a**mic **Vi**sion-and-Language **N**avigation in **C**ont**i**nuous Environment) dataset, which achieves a paradigm shift from discrete to continuous and from static to dynamic representations in outdoor VLN datasets for vehicle.
 
