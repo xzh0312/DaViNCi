@@ -67,6 +67,24 @@ Note: Both Zihao Xie and Pingrui Lai contributed equally to this research.
 
 ### Path Generation
 In simulation environments configured to exclude all additional dynamic traffic participants and moving obstacles, a randomly spawned autonomous vehicle is initialized to execute free navigation tasks in the virtual simulated scenario. During the entire navigation process, the vehicle’s behavioral decisions and operational maneuvering strategies at key spatial nodes and critical positional waypoints are autonomously determined and executed by the autonomous driving control program in real time. Meanwhile, positional coordinate data of the ego vehicle are continuously sampled and recorded at a fixed sampling interval of one second; subsequently, the sequentially acquired position waypoints are connected and fitted in chronological order, thereby constructing and generating the accurate ground-truth reference path corresponding to each independent navigation traversal trial. The trajectory data is stored in a JSON file, containing road information and position coordinate information for each frame.
+```
+
+{
+        "time_sec": 1.0, "road_id": 22, "lane_id": 1, "section_id": 0, "lane_change": 1, "is_junction": false,
+        "s": 19.079432093556104, "x": -45.28676223754883, "y": -24.248592376708984, "z": 2.0,
+        "yaw": 270.43231201171875, "pitch": 360.0, "roll": 0.0
+},
+...
+```
+<div style="text-align: center;">
+  <video 
+    src="https://github.com/xzh0312/DaViNCi/blob/master/imgs/PathGeneration.mp4?raw=true" 
+    controls 
+    width="80%" 
+    style="max-width: 100%;"
+  >
+  </video>
+</div>
 
 ### Instruction Generation
 During the vehicle operation process described above, first-person driving videos are recorded to provide source material for instruction generation. To address the limitations of existing VLMs in generating navigation descriptions from first-person driving videos, this paper proposes a two-stage processing framework and then perform manual fine-tuning.
