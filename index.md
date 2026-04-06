@@ -218,3 +218,22 @@ $$
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DynamicNumber.png?raw=true)
 
 **Typical Instance**
+<div style="text-align: center;">
+  <video 
+    src="https://github.com/xzh0312/DaViNCi/blob/master/imgs/57_success.mp4?raw=true" 
+    controls 
+    width="80%" 
+    style="max-width: 100%;"
+  >
+  </video>
+</div>
+
+<div style="text-align: center;">
+  <video 
+    src="https://github.com/xzh0312/DaViNCi/blob/master/imgs/54_wrong.mp4?raw=true" 
+    controls 
+    width="80%" 
+    style="max-width: 100%;"
+  >
+  </video>
+</div>
