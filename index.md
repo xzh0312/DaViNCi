@@ -120,6 +120,17 @@ Customized high-precision prompts are constructed with the following constraints
 
 The MultiModalConversation interface of Tongyi Qwen is called, with local video files and customized prompts as inputs, to acquire natural language caption outputs.
 
+### Dynamic Environment
+<div style="text-align: center;">
+  <video 
+    src="https://github.com/xzh0312/DaViNCi/blob/master/imgs/Dynamic.mp4?raw=true" 
+    controls 
+    width="80%" 
+    style="max-width: 100%;"
+  >
+  </video>
+</div>
+
 
 
 
