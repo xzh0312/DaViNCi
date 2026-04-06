@@ -21,15 +21,27 @@ layout: default
 
 **Town01** : A rural environment. The elements in the view are simple, with low-rise buildings and simple road structures. There are some characteristic elements such as streams and bridges.
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town01.png?raw=true)
+
 **Town02** : Another rural environment. Compared to town01, the road structure is more compact and complex, with a relatively greater number of environmental elements.
+
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town02.png?raw=true)
 
 **Town03** : A town environment involving elevation differences in roads, featuring wider roads and a more complex road structure. It includes some special elements such as roundabouts, uphill and downhill slopes, tunnels, five-way intersections, etc.
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town03.png?raw=true)
+
 **Town04** : A highway environment including a small town area. There are classic highway elements such as multi-lane driving and entrance and exit ramps. In addition, the highway also involves a section of mountain road.
+
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town04.png?raw=true)
 
 **Town05** : An urban environment. It encompasses towering buildings and intricate road structures. Also, it involves the construction of overpasses, incorporating vertical coordinates.
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town05.png?raw=true)
+
 **Town10** : A prosperous urban environment. It encompasses a rich array of elements, including museums, cultural walls, large shopping malls, subway stations, parks, etc. It serves as the primary collection site for the dataset.
+
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town10.png?raw=true)
 
 ### Traffic Scenarios
 
@@ -41,6 +53,7 @@ layout: default
 
 **Lane Change** : The agent needs to perform lane-changing operations at the right time to reasonably navigate the prescribed route at key intersections.
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/TrafficScenarios.png?raw=true)
 
 
 
