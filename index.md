@@ -153,124 +153,70 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 **Typical Instance**. The memory and alignment pressure brought by long-distance navigation manifest as errors in the later stages of navigation.
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DisExample.png?raw=true)
 
+### Continuous Environment
 
+**COVL-RL**
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/COVL-RL.png?raw=true)
+At each time step, the model receives textual navigation instructions, current visual observations, and historical context to predict the agent's immediate action:
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
+$$
+a_{t}\sim\pi_{\theta}\left(a_{t}\mid\mathcal{I},\mathcal{H}_{t},\mathcal{V}_{t}\right)
+$$
 
-[Link to another page](./another-page.html).
+$\mathcal{I}$ denotes the textual instruction, $\mathcal{V}_{t}$ represents the visual observation at timestep $t$, and $\mathcal{H}_{t}$ encapsulates the historical trajectory up to but excluding timestep $t$. The historical context $\mathcal{H}_{t}$ comprises both past visual observations and the corresponding executed actions, such that:
 
-There should be whitespace between paragraphs.
+$$
+\mathcal{H}_{t}=\{\mathcal{V}_{1},A_{1},\mathcal{V}_{2},A_{2},\ldots,\mathcal{V}_{t-1},A_{t-1}\}
+$$
 
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
+The RL framework continuously optimizes the action policy through reward shaping, where actions aligning with the ground-truth trajectory receive positive rewards while deviating actions incur penalties. The optimization objective is formulated as:
 
-# Header 1
+$$
+\begin{aligned}
+\mathcal{L}^{\text{PPO}} &= \mathcal{L}^{\text{Actor}} + \mathcal{L}^{\text{Critic}} - \beta \mathcal{H} \\
+\mathcal{L}^{\text{Actor}} &= \mathbb{E}_t \left[ \min \left( r_t(\theta) A_t, \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) A_t \right) \right] \\
+\mathcal{L}^{\text{Critic}} &= \frac{1}{2} \mathbb{E}_t \left[ (V_\theta(s_t) - R_t)^2 \right] \\
+\mathcal{H} &= \mathbb{E}_t \left[ \text{Entropy}( \pi_\theta(\cdot|s_t) ) \right]
+\end{aligned}
+$$
 
-This is a normal paragraph following a header. GitHub is a code hosting platform for version control and collaboration. It lets you and others work together on projects from anywhere.
+The PPO objective $\mathcal{L}^{\text{PPO}} = \mathcal{L}^{\text{Actor}} + \mathcal{L}^{\text{Critic}} - \beta\mathcal{H}$ optimizes policy $\pi_\theta$ through: (1) $\mathcal{L}^{\text{Actor}}$ using clipped ratio $r_t(\theta) = \pi_\theta/\pi_{\theta_{old}}$ and advantage $A_t$, (2) $\mathcal{L}^{\text{Critic}}$ minimizing TD error $(V_\theta(s_t) - R_t)^2$, and (3) entropy $\mathcal{H}$ for exploration. Hyperparameters $\epsilon$ clips $r_t(\theta)$ in $[1-\epsilon,1+\epsilon]$, while $\beta$ weights $\mathcal{H}$. The expectations $\mathbb{E}_t$ are over trajectories.
 
-## Header 2
+The reward function is designed as follows:
 
-> This is a blockquote following a header.
->
-> When something is important enough, you do it even if the odds are not in your favor.
+$$
+\mathcal{R} = 5 + \mathcal{R}_{dist} + \mathcal{R}_{dest}
+$$
 
-### Header 3
+The distance reward $\mathcal{R}_{\text{dist}}$ quantifies the agent's deviation from the ground-truth trajectory. At each timestep $t$, the navigation system identifies all ground-truth waypoints $\mathcal{wp}_t \in \{wp_1, \ldots, wp_k\}$ in a 10-meter lookahead distance from the agent's current position. When action $a_t$ is executed and the agent transitions to state $s_{t+1}$, the reward is computed as the negative minimum Euclidean distance between the new position and the previously identified waypoints:
 
-```js
-// Javascript code with syntax highlighting.
-var fun = function lang(l) {
-  dateformat.i18n = require('./lang/' + l)
-  return true;
-}
-```
+$$
+\mathcal{R}_{dist} = -\text{distance}(\text{position}_{t},\text{wp}_{t})
+$$
 
-```ruby
-# Ruby code with syntax highlighting
-GitHubPages::Dependencies.gems.each do |gem, version|
-  s.add_dependency(gem, "= #{version}")
-end
-```
+The destination reward $\mathcal{R}_{\text{dest}}$ provides terminal feedback based on the agent's final stopping position $s_T$ relative to the target destination $D$:
 
-#### Header 4
+$$
+\mathcal{R}_{dest} =
+\begin{cases}
+100 - \text{distance}(s_T,D), & \text{in range} \\
+-100 - \text{distance}(s_T,D), & \text{out of range}
+\end{cases}
+$$
 
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
-*   This is an unordered list following a header.
+Furthermore, the study revealed that during the training process, should the agent select an incorrect action at a critical timestep, it would subsequently engage in prolonged and futile exploration along an erroneous trajectory. During this period, the system would consistently provide a significantly negative reward value. This phenomenon not only results in substantial wastage of training time but also leads the model to erroneously penalize all subsequent actions, despite the initial mistake being confined to that single critical step. To address this issue, we have designed an early termination strategy that immediately halts the current training episode when the agent significantly deviates from the ground-truth trajectory:
 
-##### Header 5
+$$
+\mathcal{R} < -10
+$$
 
-1.  This is an ordered list following a header.
-2.  This is an ordered list following a header.
-3.  This is an ordered list following a header.
+**Results**
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DaViNCiResults.png?raw=true)
 
-###### Header 6
+**Impact of Granularity**
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/granularity.png?raw=true)
 
-| head1        | head two          | three |
-|:-------------|:------------------|:------|
-| ok           | good swedish fish | nice  |
-| out of stock | good and plenty   | nice  |
-| ok           | good `oreos`      | hmm   |
-| ok           | good `zoute` drop | yumm  |
+**Impact of Dynamic Elements**
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DynamicNumber.png?raw=true)
 
-### There's a horizontal rule below this.
-
-* * *
-
-### Here is an unordered list:
-
-*   Item foo
-*   Item bar
-*   Item baz
-*   Item zip
-
-### And an ordered list:
-
-1.  Item one
-1.  Item two
-1.  Item three
-1.  Item four
-
-### And a nested list:
-
-- level 1 item
-  - level 2 item
-  - level 2 item
-    - level 3 item
-    - level 3 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-  - level 2 item
-  - level 2 item
-- level 1 item
-
-### Small image
-
-![Octocat](https://github.githubassets.com/images/icons/emoji/octocat.png)
-
-### Large image
-
-![Branching](https://guides.github.com/activities/hello-world/branching.png)
-
-
-### Definition lists can be used with HTML syntax.
-
-<dl>
-<dt>Name</dt>
-<dd>Godzilla</dd>
-<dt>Born</dt>
-<dd>1952</dd>
-<dt>Birthplace</dt>
-<dd>Japan</dd>
-<dt>Color</dt>
-<dd>Green</dd>
-</dl>
-
-```
-Long, single-line code blocks should not wrap. They should horizontally scroll if they are too long. This line should be long enough to demonstrate this.
-```
-
-```
-The final element.
-```
+**Typical Instance**
