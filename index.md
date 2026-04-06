@@ -2,6 +2,21 @@
 layout: default
 ---
 
+## Overviews
+- We propose the DaViNCi (**D**yn**a**mic **Vi**sion-and-Language **N**avigation in **C**ont**i**nuous Environment) dataset, which achieves a paradigm shift from discrete to continuous and from static to dynamic representations in outdoor VLN datasets for vehicle.
+
+- We propose test benchmarks of our dataset for both discrete and continuous environments.
+
+- Through a series of experiments, we demonstrate both the validity and challenge of the dataset and provide a baseline in continuous environment.
+
+![pic](https://github.com/xzh0312/minima/blob/master/imgs/advantage.png?raw=true)
+
+
+
+
+
+
+
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
 [Link to another page](./another-page.html).
