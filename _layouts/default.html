@@ -2,6 +2,23 @@
 <html lang="{{ site.lang | default: "en-US" }}">
   <head>
     <meta charset="UTF-8">
+    <script>
+      MathJax = {
+        tex: {
+          inlineMath: [['$', '$'], ['\\(', '\\)']],
+          displayMath: [['$$', '$$'], ['\\[', '\\]']],
+          processEscapes: true,
+          packages: {'[+]': ['amsmath', 'amssymb', 'cancel']}
+        },
+        options: {
+          ignoreHtmlClass: 'no-mathjax',
+          processHtmlClass: 'mathjax'
+        }
+      };
+    </script>
+    <script id="MathJax-script" async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
 
 {% seo %}
     <link rel="preconnect" href="https://fonts.gstatic.com">
