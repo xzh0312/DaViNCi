@@ -155,60 +155,59 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 
 ### Continuous Environment
 
-**COVL-RL**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/COVL-RL.png?raw=true)
-At each time step, the model receives textual navigation instructions, current visual observations, and historical context to predict the agent's immediate action:
+**COVL-RL**. At each time step, the model receives textual navigation instructions, current visual observations, and historical context to predict the agent's immediate action:
 
-$$
-a_{t}\sim\pi_{\theta}\left(a_{t}\mid\mathcal{I},\mathcal{H}_{t},\mathcal{V}_{t}\right)
-$$
+\[
+a_{t} \sim \pi_{\theta}\left(a_{t} \mid \mathcal{I}, \mathcal{H}_{t}, \mathcal{V}_{t}\right)
+\]
 
-$\mathcal{I}$ denotes the textual instruction, $\mathcal{V}_{t}$ represents the visual observation at timestep $t$, and $\mathcal{H}_{t}$ encapsulates the historical trajectory up to but excluding timestep $t$. The historical context $\mathcal{H}_{t}$ comprises both past visual observations and the corresponding executed actions, such that:
+\(\mathcal{I}\) denotes the textual instruction, \(\mathcal{V}_{t}\) represents the visual observation at timestep \(t\), and \(\mathcal{H}_{t}\) encapsulates the historical trajectory up to but excluding timestep \(t\). The historical context \(\mathcal{H}_{t}\) comprises both past visual observations and the corresponding executed actions, such that:
 
-$$
-\mathcal{H}_{t}=\{\mathcal{V}_{1},A_{1},\mathcal{V}_{2},A_{2},\ldots,\mathcal{V}_{t-1},A_{t-1}\}
-$$
+\[
+\mathcal{H}_{t} = \{\mathcal{V}_{1}, A_{1}, \mathcal{V}_{2}, A_{2}, \ldots, \mathcal{V}_{t-1}, A_{t-1}\}
+\]
 
 The RL framework continuously optimizes the action policy through reward shaping, where actions aligning with the ground-truth trajectory receive positive rewards while deviating actions incur penalties. The optimization objective is formulated as:
 
-$$
+\[
 \begin{aligned}
 \mathcal{L}^{\text{PPO}} &= \mathcal{L}^{\text{Actor}} + \mathcal{L}^{\text{Critic}} - \beta \mathcal{H} \\
-\mathcal{L}^{\text{Actor}} &= \mathbb{E}_t \left[ \min \left( r_t(\theta) A_t, \text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) A_t \right) \right] \\
+\mathcal{L}^{\text{Actor}} &= \mathbb{E}_t \left[ \min \left( r_t(\theta) A_t, \text{clip}\left(r_t(\theta), 1-\epsilon, 1+\epsilon\right) A_t \right) \right] \\
 \mathcal{L}^{\text{Critic}} &= \frac{1}{2} \mathbb{E}_t \left[ (V_\theta(s_t) - R_t)^2 \right] \\
-\mathcal{H} &= \mathbb{E}_t \left[ \text{Entropy}( \pi_\theta(\cdot|s_t) ) \right]
+\mathcal{H} &= \mathbb{E}_t \left[ \text{Entropy}\left( \pi_\theta(\cdot|s_t) \right) \right]
 \end{aligned}
-$$
+\]
 
-The PPO objective $\mathcal{L}^{\text{PPO}} = \mathcal{L}^{\text{Actor}} + \mathcal{L}^{\text{Critic}} - \beta\mathcal{H}$ optimizes policy $\pi_\theta$ through: (1) $\mathcal{L}^{\text{Actor}}$ using clipped ratio $r_t(\theta) = \pi_\theta/\pi_{\theta_{old}}$ and advantage $A_t$, (2) $\mathcal{L}^{\text{Critic}}$ minimizing TD error $(V_\theta(s_t) - R_t)^2$, and (3) entropy $\mathcal{H}$ for exploration. Hyperparameters $\epsilon$ clips $r_t(\theta)$ in $[1-\epsilon,1+\epsilon]$, while $\beta$ weights $\mathcal{H}$. The expectations $\mathbb{E}_t$ are over trajectories.
+The PPO objective \(\mathcal{L}^{\text{PPO}} = \mathcal{L}^{\text{Actor}} + \mathcal{L}^{\text{Critic}} - \beta\mathcal{H}\) optimizes policy \(\pi_\theta\) through: (1) \(\mathcal{L}^{\text{Actor}}\) using clipped ratio \(r_t(\theta) = \pi_\theta/\pi_{\theta_{\text{old}}}\) and advantage \(A_t\), (2) \(\mathcal{L}^{\text{Critic}}\) minimizing TD error \((V_\theta(s_t) - R_t)^2\), and (3) entropy \(\mathcal{H}\) for exploration. Hyperparameters \(\epsilon\) clips \(r_t(\theta)\) in \([1-\epsilon,1+\epsilon]\), while \(\beta\) weights \(\mathcal{H}\). The expectations \(\mathbb{E}_t\) are over trajectories.
 
 The reward function is designed as follows:
 
-$$
-\mathcal{R} = 5 + \mathcal{R}_{dist} + \mathcal{R}_{dest}
-$$
+\[
+\mathcal{R} = 5 + \mathcal{R}_{\text{dist}} + \mathcal{R}_{\text{dest}}
+\]
 
-The distance reward $\mathcal{R}_{\text{dist}}$ quantifies the agent's deviation from the ground-truth trajectory. At each timestep $t$, the navigation system identifies all ground-truth waypoints $\mathcal{wp}_t \in \{wp_1, \ldots, wp_k\}$ in a 10-meter lookahead distance from the agent's current position. When action $a_t$ is executed and the agent transitions to state $s_{t+1}$, the reward is computed as the negative minimum Euclidean distance between the new position and the previously identified waypoints:
+The distance reward \(\mathcal{R}_{\text{dist}}\) quantifies the agent's deviation from the ground-truth trajectory. At each timestep \(t\), the navigation system identifies all ground-truth waypoints \(\mathcal{wp}_t \in \{wp_1, \ldots, wp_k\}\) in a 10-meter lookahead distance from the agent's current position. When action \(a_t\) is executed and the agent transitions to state \(s_{t+1}\), the reward is computed as the negative minimum Euclidean distance between the new position and the previously identified waypoints:
 
-$$
-\mathcal{R}_{dist} = -\text{distance}(\text{position}_{t},\text{wp}_{t})
-$$
+\[
+\mathcal{R}_{\text{dist}} = -\text{distance}\left(\text{position}_{t}, \text{wp}_{t}\right)
+\]
 
-The destination reward $\mathcal{R}_{\text{dest}}$ provides terminal feedback based on the agent's final stopping position $s_T$ relative to the target destination $D$:
+The destination reward \(\mathcal{R}_{\text{dest}}\) provides terminal feedback based on the agent's final stopping position \(s_T\) relative to the target destination \(D\):
 
-$$
-\mathcal{R}_{dest} =
+\[
+\mathcal{R}_{\text{dest}} =
 \begin{cases}
-100 - \text{distance}(s_T,D), & \text{in range} \\
--100 - \text{distance}(s_T,D), & \text{out of range}
+100 - \text{distance}\left(s_T, D\right), & \text{in range} \\
+-100 - \text{distance}\left(s_T, D\right), & \text{out of range}
 \end{cases}
-$$
+\]
 
 Furthermore, the study revealed that during the training process, should the agent select an incorrect action at a critical timestep, it would subsequently engage in prolonged and futile exploration along an erroneous trajectory. During this period, the system would consistently provide a significantly negative reward value. This phenomenon not only results in substantial wastage of training time but also leads the model to erroneously penalize all subsequent actions, despite the initial mistake being confined to that single critical step. To address this issue, we have designed an early termination strategy that immediately halts the current training episode when the agent significantly deviates from the ground-truth trajectory:
 
-$$
+\[
 \mathcal{R} < -10
-$$
+\]
 
 **Results**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DaViNCiResults.png?raw=true)
