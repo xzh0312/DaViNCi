@@ -2,7 +2,7 @@
 layout: default
 ---
 # DaViNCi
-# Overviews
+## Overviews
 - We propose the DaViNCi (**D**yn**a**mic **Vi**sion-and-Language **N**avigation in **C**ont**i**nuous Environment) dataset, which achieves a paradigm shift from discrete to continuous and from static to dynamic representations in outdoor VLN datasets for vehicle.
 
 - We propose test benchmarks of our dataset for both discrete and continuous environments.
@@ -11,13 +11,11 @@ layout: default
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/intro.png?raw=true)
 
-# Construction Method of DaViNCi
+## Construction Method of DaViNCi
 
 **Simulator** : CARLA has been developed from the ground up to support development, training, and validation of autonomous driving systems. In addition to open-source code and protocols, CARLA provides open digital assets (urban layouts, buildings, vehicles) that were created for this purpose and can be used freely. The simulation platform supports flexible specification of sensor suites, environmental conditions, full control of all static and dynamic actors, maps generation and much more. [Link to Carla](https://carla.org/)
 
-## Scenario Selection
-
-### Maps
+## Scenario Selection--Maps
 
 **Town01** : A rural environment. The elements in the view are simple, with low-rise buildings and simple road structures. There are some characteristic elements such as streams and bridges.
 
@@ -43,7 +41,7 @@ layout: default
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town10.png?raw=true)
 
-### Traffic Scenarios
+## Scenario Selection--Traffic Scenarios
 
 **Traffic and other entities** : The agent needs to navigate various road traffic rules and interact appropriately with other vehicles, pedestrians, cyclists, etc.
 
