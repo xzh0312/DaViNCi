@@ -1,15 +1,45 @@
----
+<img width="347" height="62" alt="image" src="https://github.com/user-attachments/assets/db188305-0557-4225-b8d4-084c8140d932" />---
 layout: default
 ---
 
-## Overviews
+# Overviews
 - We propose the DaViNCi (**D**yn**a**mic **Vi**sion-and-Language **N**avigation in **C**ont**i**nuous Environment) dataset, which achieves a paradigm shift from discrete to continuous and from static to dynamic representations in outdoor VLN datasets for vehicle.
 
 - We propose test benchmarks of our dataset for both discrete and continuous environments.
 
 - Through a series of experiments, we demonstrate both the validity and challenge of the dataset and provide a baseline in continuous environment.
 
-![pic](https://github.com/xzh0312/minima/blob/master/imgs/advantage.png?raw=true)
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/intro.png?raw=true)
+
+# Construction Method of DaViNCi
+
+**Simulator** : CARLA has been developed from the ground up to support development, training, and validation of autonomous driving systems. In addition to open-source code and protocols, CARLA provides open digital assets (urban layouts, buildings, vehicles) that were created for this purpose and can be used freely. The simulation platform supports flexible specification of sensor suites, environmental conditions, full control of all static and dynamic actors, maps generation and much more. [Link to Carla](https://carla.org/)
+
+## Scenario Selection
+
+### Maps
+
+**Town01** : A rural environment. The elements in the view are simple, with low-rise buildings and simple road structures. There are some characteristic elements such as streams and bridges.
+
+**Town02** : Another rural environment. Compared to town01, the road structure is more compact and complex, with a relatively greater number of environmental elements.
+
+**Town03** : A town environment involving elevation differences in roads, featuring wider roads and a more complex road structure. It includes some special elements such as roundabouts, uphill and downhill slopes, tunnels, five-way intersections, etc.
+
+**Town04** : A highway environment including a small town area. There are classic highway elements such as multi-lane driving and entrance and exit ramps. In addition, the highway also involves a section of mountain road.
+
+**Town05** : An urban environment. It encompasses towering buildings and intricate road structures. Also, it involves the construction of overpasses, incorporating vertical coordinates.
+
+**Town10** : A prosperous urban environment. It encompasses a rich array of elements, including museums, cultural walls, large shopping malls, subway stations, parks, etc. It serves as the primary collection site for the dataset.
+
+### Traffic Scenarios
+
+**Traffic and other entities** : The agent needs to navigate various road traffic rules and interact appropriately with other vehicles, pedestrians, cyclists, etc.
+
+**Traffic intersections** : The agent needs to comprehensively interact with various information in the intersection road structure.
+
+**Roundabout** : The agent needs to comprehensively interact with various information in the roundabout road structure.
+
+**Lane Change** : The agent needs to perform lane-changing operations at the right time to reasonably navigate the prescribed route at key intersections.
 
 
 
