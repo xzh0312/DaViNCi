@@ -96,6 +96,8 @@ Result Export.
 A result.txt file is generated to record the start/end timestamps and direction of each turning event;
 A trajectory visualization diagram (trajectory.png) is plotted with annotations of original trajectories, fitted segments and timestamps for result verification.
 
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/instruction.png?raw=true)
+
 #### Step 2 Natural Language Caption Generation for Videos with Calibrated Turning Facts
 This step invokes the Tongyi Qwen multimodal API (qwen3-vl-plus). The precise turning facts obtained in Step 1 are embedded into prompts to guide the API in analyzing video content and generating logically consistent navigation descriptions.
 
