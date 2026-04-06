@@ -159,13 +159,13 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 **COVL-RL**. At each time step, the model receives textual navigation instructions, current visual observations, and historical context to predict the agent's immediate action:
 
 $$
-a\_{t} \sim \pi\_{\theta}\left(a\_{t} \mid \mathcal{I}, \mathcal{H}\_{t}, \mathcal{V}\_{t}\right)
+a_{t} \sim \pi_{\theta}\left(a_{t} \mid \mathcal{I}, \mathcal{H}_{t}, \mathcal{V}_{t}\right)
 $$
 
 $\mathcal{I}$ denotes the textual instruction, $\mathcal{V}\_{t}$ represents the visual observation at timestep $t$, and $\mathcal{H}\_{t}$ encapsulates the historical trajectory up to but excluding timestep $t$. The historical context $\mathcal{H}\_{t}$ comprises both past visual observations and the corresponding executed actions, such that:
 
 $$
-\mathcal{H}\_{t} = \{\mathcal{V}\_{1}, A\_{1}, \mathcal{V}\_{2}, A\_{2}, \ldots, \mathcal{V}\_{t-1}, A\_{t-1}\}
+\mathcal{H}_{t} = \{\mathcal{V}_{1}, A_{1}, \mathcal{V}_{2}, A_{2}, \ldots, \mathcal{V}_{t-1}, A_{t-1}\}
 $$
 
 The RL framework continuously optimizes the action policy through reward shaping, where actions aligning with the ground-truth trajectory receive positive rewards while deviating actions incur penalties. The optimization objective is formulated as:
@@ -173,9 +173,9 @@ The RL framework continuously optimizes the action policy through reward shaping
 $$
 \begin{aligned}
 \mathcal{L}^{\text{PPO}} &= \mathcal{L}^{\text{Actor}} + \mathcal{L}^{\text{Critic}} - \beta \mathcal{H} \\
-\mathcal{L}^{\text{Actor}} &= \mathbb{E}\_t \left[ \min \left( r\_t(\theta) A\_t, \text{clip}\left(r\_t(\theta), 1-\epsilon, 1+\epsilon\right) A\_t \right) \right] \\
-\mathcal{L}^{\text{Critic}} &= \frac{1}{2} \mathbb{E}\_t \left[ (V\_{\theta}(s\_t) - R\_t)^2 \right] \\
-\mathcal{H} &= \mathbb{E}\_t \left[ \text{Entropy}\left( \pi\_{\theta}(\cdot|s\_t) \right) \right]
+\mathcal{L}^{\text{Actor}} &= \mathbb{E}_t \left[ \min \left( r_t(\theta) A_t, \text{clip}\left(r_t(\theta), 1-\epsilon, 1+\epsilon\right) A_t \right) \right] \\
+\mathcal{L}^{\text{Critic}} &= \frac{1}{2} \mathbb{E}_t \left[ (V_{\theta}(s_t) - R_t)^2 \right] \\
+\mathcal{H} &= \mathbb{E}_t \left[ \text{Entropy}\left( \pi_{\theta}(\cdot|s_t) \right) \right]
 \end{aligned}
 $$
 
@@ -183,22 +183,22 @@ The PPO objective $\mathcal{L}^{\text{PPO}} = \mathcal{L}^{\text{Actor}} + \math
 The reward function is designed as follows:
 
 $$
-\mathcal{R} = 5 + \mathcal{R}\_{\text{dist}} + \mathcal{R}\_{\text{dest}}
+\mathcal{R} = 5 + \mathcal{R}_{\text{dist}} + \mathcal{R}_{\text{dest}}
 $$
 
 The distance reward $\mathcal{R}\_{\text{dist}}$ quantifies the agent's deviation from the ground-truth trajectory. At each timestep $t$, the navigation system identifies all ground-truth waypoints $\mathcal{wp}\_t \in \{wp\_1, \ldots, wp\_k\}$ in a 10-meter lookahead distance from the agent's current position. When action $a\_t$ is executed and the agent transitions to state $s\_{t+1}$, the reward is computed as the negative minimum Euclidean distance between the new position and the previously identified waypoints:
 
 $$
-\mathcal{R}\_{\text{dist}} = -\text{distance}\left(\text{position}\_{t}, \text{wp}\_{t}\right)
+\mathcal{R}_{\text{dist}} = -\text{distance}\left(\text{position}_{t}, \text{wp}_{t}\right)
 $$
 
 The destination reward $\mathcal{R}\_{\text{dest}}$ provides terminal feedback based on the agent's final stopping position $s\_T$ relative to the target destination $D$:
 
 $$
-\mathcal{R}\_{\text{dest}} =
+\mathcal{R}_{\text{dest}} =
 \begin{cases}
-100 - \text{distance}\left(s\_T, D\right), & \text{in range} \\
--100 - \text{distance}\left(s\_T, D\right), & \text{out of range}
+100 - \text{distance}\left(s_T, D\right), & \text{in range} \\
+-100 - \text{distance}\left(s_T, D\right), & \text{out of range}
 \end{cases}
 $$
 
