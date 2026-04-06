@@ -72,48 +72,33 @@ In simulation environments configured to exclude all additional dynamic traffic 
 During the vehicle operation process described above, first-person driving videos are recorded to provide source material for instruction generation. To address the limitations of existing VLMs in generating navigation descriptions from first-person driving videos, this paper proposes a two-stage processing framework and then perform manual fine-tuning.
 
 #### Step 1 Quantification of Turning Information Based on Trajectory Data
-This step extracts accurate turning directions and temporal intervals from driving trajectory JSON files through mathematical fitting and logical inference. It provides factual prior knowledge for subsequent video analysis, eliminating judgment deviations caused by visual-only video understanding.
+This step extracts precise turning directions and temporal intervals from trajectory JSON files via mathematical fitting and logical inference, providing reliable prior knowledge for subsequent video analysis and eliminating visual judgment biases.
 
-Data Preparation and Path Processing.
-Input: Root directory of trajectory JSON files with multi-level subfolders. Each JSON record contains the x/y coordinates, timestamps, road IDs and other attributes of driving trajectories.
-Output: A dedicated turn folder is generated in the code directory, retaining the original hierarchical structure to store turning analysis results corresponding to each JSON file.
+Data Preparation & Path Processing: Taking the multi-level root directory of trajectory JSON data (containing coordinates, timestamps, road IDs and other attributes) as input, the output preserves the original folder hierarchy and generates a dedicated directory to store turning analysis results.
+Trajectory Parsing & Preprocessing: Core information is extracted from JSON files; X/Y coordinates are axis-mirrored to fit standard visual coordinate systems, while timestamps and road IDs of each trajectory point are retained.
 
-Trajectory Parsing and Preprocessing.
-Core data is extracted from JSON files with the following operations:
-X/Y coordinates are extracted, and the Y-axis is mirrored to adapt to standard visual coordinate systems;
-Timestamps and road IDs for each coordinate point are retained.
+Segmented Trajectory Fitting: Continuous trajectories are divided into horizontal/vertical straight-driving segments by statistical thresholding: segments with low x-coordinate standard deviation are defined as longitudinal driving, and those meeting y-coordinate deviation constraints as lateral driving. Each segment is annotated with driving orientation, affiliated road ID and start-end indices.
 
-Segmented Fitting of Trajectories (Horizontal/Vertical Segments).
-Statistical methods are adopted to divide continuous trajectories into horizontal or vertical segments, representing distinct straight-driving orientations of vehicles:
-A fitting threshold is predefined. A trajectory segment is classified as a vertical segment (longitudinal driving) if the standard deviation of its x-coordinates is below the threshold; it is defined as a horizontal segment (lateral driving) if the standard deviation of its y-coordinates satisfies the threshold constraint.
-Each fitted segment is annotated with driving orientation (e.g., left/right for horizontal segments; upward/downward for vertical segments), affiliated road ID, and start-end coordinate indices.
+Segment Merging & Turning Detection: Homogeneous consecutive segments are merged to reduce redundancy; vector cross-product calculation identifies left/right turns at heterogeneous segment junctions, and timestamps are calibrated with a -1 second offset to correct systematic errors.
 
-Segment Merging and Turning Detection.
-Consecutive segments of the same type are merged to reduce data redundancy;
-Direction transitions between adjacent heterogeneous segments are detected. The cross product of vectors is utilized to determine left/right turning directions, and timestamps of trajectories are adopted to calibrate turning intervals (all timestamps are offset by -1 second to mitigate systematic errors).
-
-Result Export.
-A result.txt file is generated to record the start/end timestamps and direction of each turning event;
-A trajectory visualization diagram (trajectory.png) is plotted with annotations of original trajectories, fitted segments and timestamps for result verification.
+Result Export: Turning events (timestamp range and direction) are recorded in result.txt; a visualized trajectory diagram with raw paths, fitted segments and time annotations is generated for verification.
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/instruction.png?raw=true)
 
 #### Step 2 Natural Language Caption Generation for Videos with Calibrated Turning Facts
-This step invokes the Tongyi Qwen multimodal API (qwen3-vl-plus). The precise turning facts obtained in Step 1 are embedded into prompts to guide the API in analyzing video content and generating logically consistent navigation descriptions.
+This step adopts the Tongyi Qwen 3-VL-Plus multimodal API. The precise turning information derived from Step 1 is integrated into prompts to guide video content analysis and generate logically consistent navigation descriptions.
 
-Path Matching and Turning Data Loading.
-The video root directory (with the same folder structure as trajectory JSON files) is traversed recursively. Each MP4 video file is automatically matched with the corresponding result.txt from Step 1;
-Turning attributes (directions and temporal intervals) are loaded from text files as the factual foundation for prompt engineering.
+Path Matching & Data Loading: The video directory with a consistent structure to trajectory files is recursively traversed to match each MP4 video with its corresponding Step 1 result file. Turning directions and temporal intervals are loaded as factual prompt constraints.
 
-Multimodal API Invocation.
-Customized high-precision prompts are constructed with the following constraints:
+Multimodal API Invocation:
+Customized high-precision prompts are constructed with the following constraints.
 
-'''
-The turning directions defined in Step 1 must be strictly followed; timestamps are only used as internal references and prohibited from appearing in final outputs;
-All outputs adopt standardized navigation instruction formats (e.g., Go straight → Turn right → Drive along the left curve) without any temporal information;
-Real-world landmarks are extracted from video frames (e.g., Turn right at the traffic light, Drive along the left curve beside the supermarket);
-Clear distinctions are made between intersection turns and road curves to accurately describe the trigger points of vehicle maneuvers.
-'''
+```
+1. The turning directions defined in Step 1 must be strictly followed; timestamps are only used as internal references and prohibited from appearing in final outputs;
+2. All outputs adopt standardized navigation instruction formats (e.g., Go straight → Turn right → Drive along the left curve) without any temporal information;
+3. Real-world landmarks are extracted from video frames (e.g., Turn right at the traffic light, Drive along the left curve beside the supermarket);
+4. Clear distinctions are made between intersection turns and road curves to accurately describe the trigger points of vehicle maneuvers.
+```
 
 The MultiModalConversation interface of Tongyi Qwen is called, with local video files and customized prompts as inputs, to acquire natural language caption outputs.
 
