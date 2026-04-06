@@ -4,7 +4,6 @@ layout: default
 # DaViNCi
 
 ## Authors
-<div style="text-align: center;">
 Zihao Xie¹, Pingrui Lai¹, Yitong Wu¹, Hua Yang¹⁎.
 
 xzh031202@sjtu.edu.cn, laipingrui@sjtu.edu.cn, maca8ka@sjtu.edu.cn, hyang@sjtu.edu.cn
@@ -14,7 +13,6 @@ xzh031202@sjtu.edu.cn, laipingrui@sjtu.edu.cn, maca8ka@sjtu.edu.cn, hyang@sjtu.e
 ⁎Corresponding author. 
 
 Note: Both Zihao Xie and Pingrui Lai contributed equally to this research.
-</div>
 
 ## Overviews
 - We propose the DaViNCi (**D**yn**a**mic **Vi**sion-and-Language **N**avigation in **C**ont**i**nuous Environment) dataset, which achieves a paradigm shift from discrete to continuous and from static to dynamic representations in outdoor VLN datasets for vehicle.
