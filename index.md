@@ -135,11 +135,23 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 
 ## Experiments
 ### Discrete Environment
-**Discretization Adaptation**. 
-The partial extracts of four discretized maps are as follows. The partial extracts of the four discretized maps are shown below. Town01, Town02, and Town10 adopt a fine granularity of 5m, while Town03 adopts a coarse granularity of 12m. Red nodes represent nodes with only one exit, while yellow nodes represent nodes with multiple exits.
+**Discretization Adaptation**. The partial extracts of four discretized maps are as follows. The partial extracts of the four discretized maps are shown below. Town01, Town02, and Town10 adopt a fine granularity of 5m, while Town03 adopts a coarse granularity of 12m. Red nodes represent nodes with only one exit, while yellow nodes represent nodes with multiple exits.
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/Dis.png?raw=true)
 
+**Recent Baseline**.
+
+*VELMA*: This work proposes a specialized LLM-based agent that leverages linguistic representations of trajectories and visual environmental observations as contextual prompts for subsequent actions. The visual information is processed through a pipeline that extracts landmarks from human-written navigation instructions and employs CLIP to determine their visibility within the current panoramic view.
+
+*FLAME*: This method introduces a three-stage adaptive algorithm, consisting of (1) a single-perception adaptation for streetview descriptions, (2) a multi-perception adaptation for path summarization, and (3) an end-to-end training algorithm on VLNdatasets. The resulting framework yields a novel multimodal LLM-based agent and architecture.
+
+*Mem4Nav*: This approach proposes a hierarchical spatial cognitive long-short-term memory system that can enhance any VLN backbone model. It integrates (1) a sparse octree for ffnegrained voxel indexing and (2) a semantic topological graph for highlevel landmark association, both stored in trainable memory tokens via invertible Transformer embeddings. The long-term memory (LTM) compresses and retains historical observations at octree and graph nodes, while the short-term memory (STM) caches recent multimodal entries in relative coordinates for real-time obstacle avoidance and local planning.
+
+**Results**
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DisResults.png?raw=true)
+
+**Typical Instance**. The memory and alignment pressure brought by long-distance navigation manifest as errors in the later stages of navigation.
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DisExample.png?raw=true)
 
 
 
