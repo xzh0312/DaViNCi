@@ -214,7 +214,7 @@ $$
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DaViNCiResults.png?raw=true)
 
 **Impact of Granularity**
-![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/granularity.png?raw=true)
+![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/granularities.png?raw=true)
 
 **Impact of Dynamic Elements**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DynamicNumber.png?raw=true)
