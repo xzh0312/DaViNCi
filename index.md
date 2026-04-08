@@ -13,6 +13,9 @@ layout: default
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/intro.png?raw=true)
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/datasets_table.png?raw=true)
+<p style="text-align:center;">
+Table 1: Summary of the characteristic comparison between DaViNCi and the previous VLN datasets. "Dynamic" refers to the presence ($\checkmark$) or absence (--) of variable and interactive elements.
+</p>
 
 ## 2 Construction Method of DaViNCi
 
@@ -128,7 +131,7 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/Dis.png?raw=true)
 
-**Recent Baseline**.
+**Recent Baselines**.
 
 *VELMA*: This work proposes a specialized LLM-based agent that leverages linguistic representations of trajectories and visual environmental observations as contextual prompts for subsequent actions. The visual information is processed through a pipeline that extracts landmarks from human-written navigation instructions and employs CLIP to determine their visibility within the current panoramic view.
 
@@ -138,6 +141,9 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 
 **Results**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DisResults.png?raw=true)
+<p style="text-align:center;">
+Table 2: Performance of Models in Discrete Environment (Test Set)
+</p>
 
 **Typical Instance**. The memory and alignment pressure brought by long-distance navigation manifest as errors in the later stages of navigation.
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DisExample.png?raw=true)
@@ -199,12 +205,21 @@ $$
 
 **Results**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DaViNCiResults.png?raw=true)
+<p style="text-align:center;">
+Table 3: Comparison of Our Method and Random in DaViNCi. "-stop" means no $stop$ in action space.
+</p>
 
 **Impact of Granularity**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/granularities.png?raw=true)
+<p style="text-align:center;">
+Table 4: Performance under different granularities.
+</p>
 
 **Impact of Dynamic Elements**
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DynamicNumber.png?raw=true)
+<p style="text-align:center;">
+Table 5: Performance under different dynamic numbers.
+</p>
 
 **Typical Instance**
 <div style="text-align: center;">
