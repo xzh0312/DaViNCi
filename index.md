@@ -3,7 +3,7 @@ layout: default
 ---
 # DaViNCi
 
-## Overviews
+## 1 Overviews
 - We propose the DaViNCi (**D**yn**a**mic **Vi**sion-and-Language **N**avigation in **C**ont**i**nuous Environment) dataset, which achieves a paradigm shift from discrete to continuous and from static to dynamic representations in outdoor VLN datasets for vehicle.
 
 - We propose test benchmarks of our dataset for both discrete and continuous environments.
@@ -14,11 +14,11 @@ layout: default
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/datasets_table.png?raw=true)
 
-## Construction Method of DaViNCi
+## 2 Construction Method of DaViNCi
 
 **Simulator** : CARLA has been developed from the ground up to support development, training, and validation of autonomous driving systems. In addition to open-source code and protocols, CARLA provides open digital assets (urban layouts, buildings, vehicles) that were created for this purpose and can be used freely. The simulation platform supports flexible specification of sensor suites, environmental conditions, full control of all static and dynamic actors, maps generation and much more. [Link to Carla](https://carla.org/)
 
-### Scenario Selection--Maps
+### 2.1 Scenario Selection--Maps
 
 **Town01** : A rural environment. The elements in the view are simple, with low-rise buildings and simple road structures. There are some characteristic elements such as streams and bridges.
 
@@ -44,7 +44,7 @@ layout: default
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/town10.png?raw=true)
 
-### Scenario Selection--Traffic Scenarios
+### 2.2 Scenario Selection--Traffic Scenarios
 
 **Traffic and other entities** : The agent needs to navigate various road traffic rules and interact appropriately with other vehicles, pedestrians, cyclists, etc.
 
@@ -56,7 +56,7 @@ layout: default
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/TrafficScenarios.png?raw=true)
 
-### Path Generation
+### 2.3 Path Generation
 In simulation environments configured to exclude all additional dynamic traffic participants and moving obstacles, a randomly spawned autonomous vehicle is initialized to execute free navigation tasks in the virtual simulated scenario. During the entire navigation process, the vehicle’s behavioral decisions and operational maneuvering strategies at key spatial nodes and critical positional waypoints are autonomously determined and executed by the autonomous driving control program in real time. Meanwhile, positional coordinate data of the ego vehicle are continuously sampled and recorded at a fixed sampling interval of one second; subsequently, the sequentially acquired position waypoints are connected and fitted in chronological order, thereby constructing and generating the accurate ground-truth reference path corresponding to each independent navigation traversal trial. The trajectory data is stored in a JSON file, containing road information and position coordinate information for each frame.
 ```
 
@@ -77,7 +77,7 @@ In simulation environments configured to exclude all additional dynamic traffic 
   </video>
 </div>
 
-### Instruction Generation
+### 2.4 Instruction Generation
 During the vehicle operation process described above, first-person driving videos are recorded to provide source material for instruction generation. To address the limitations of existing VLMs in generating navigation descriptions from first-person driving videos, this paper proposes a two-stage processing framework and then perform manual fine-tuning.
 
 #### Step 1 Quantification of Turning Information Based on Trajectory Data
@@ -111,7 +111,7 @@ Customized high-precision prompts are constructed with the following constraints
 
 The MultiModalConversation interface of Tongyi Qwen is called, with local video files and customized prompts as inputs, to acquire natural language caption outputs.
 
-### Dynamic Environment
+### 2.5 Dynamic Environment
 <div style="text-align: center;">
   <video 
     src="https://github.com/xzh0312/DaViNCi/blob/master/imgs/Dynamic.mp4?raw=true" 
@@ -122,8 +122,8 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
   </video>
 </div>
 
-## Experiments
-### Discrete Environment
+## 3 Experiments
+### 3.1 Discrete Environment
 **Discretization Adaptation**. The partial extracts of four discretized maps are as follows. The partial extracts of the four discretized maps are shown below. Town01, Town02, and Town10 adopt a fine granularity of 5m, while Town03 adopts a coarse granularity of 12m. Red nodes represent nodes with only one exit, while yellow nodes represent nodes with multiple exits.
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/Dis.png?raw=true)
@@ -142,7 +142,7 @@ The MultiModalConversation interface of Tongyi Qwen is called, with local video 
 **Typical Instance**. The memory and alignment pressure brought by long-distance navigation manifest as errors in the later stages of navigation.
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/DisExample.png?raw=true)
 
-### Continuous Environment
+### 3.2 Continuous Environment
 
 ![pic](https://github.com/xzh0312/DaViNCi/blob/master/imgs/COVL-RL.png?raw=true)
 **COVL-RL**. At each time step, the model receives textual navigation instructions, current visual observations, and historical context to predict the agent's immediate action:
